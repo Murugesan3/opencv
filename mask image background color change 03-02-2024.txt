@@ -1,0 +1,18 @@
+    Mat image = imread("C:\\Users\\admin.DESKTOP-NB9DFO6\\Pictures\\5bd18b0d2967b-wallpaper-preview.jpg");
+    Mat color;
+    cvtColor(image, color, COLOR_BGR2HSV);
+    Scalar lowerBound(40, 40, 40);  
+    Scalar upperBound(80, 255, 255);
+    Mat mask;
+    inRange(color, lowerBound, upperBound, mask);
+
+    Mat background_color(image.size(), image.type(), Scalar(255, 0, 0));
+    Mat new_background;
+    bitwise_not(mask, new_background);
+    Mat result = image.clone();
+    result.setTo(Scalar(117, 0, 0), new_background);
+    circle(mask, cv::Point(mask.cols / 2, mask.rows / 2), 100, Scalar(255, 0, 0), -1, 8, 0);
+    image.copyTo(result, mask);
+
+    imshow("Changed Background Image", result);
+    waitKey(0);
